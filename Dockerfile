@@ -71,4 +71,4 @@ RUN printf 'server {\n    listen 80;\n    server_name _;\n\n    # 静态文件\n
 ENV PORT=80
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/local/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]
