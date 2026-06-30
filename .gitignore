@@ -1,0 +1,45 @@
+# .gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-*
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Misc
+.cache/
+.temp/
+tmp/
+bak/
+
+# Docker
+.docker/
