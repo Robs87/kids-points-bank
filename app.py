@@ -35,8 +35,18 @@ def close_db(exception):
         db.close()
 
 
-def init_db():
+def init_db(force_reset=False):
     """初始化数据库表结构"""
+    import os
+    
+    db_path = app.config['DATABASE']
+    
+    # 如果数据库不存在或强制重置，删除旧数据
+    if force_reset and os.path.exists(db_path):
+        os.remove(db_path)
+        # 创建数据目录
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    
     db = get_db()
     db.executescript('''
         -- 家长账户表
@@ -150,7 +160,12 @@ def init_db():
             FOREIGN KEY (account_id) REFERENCES accounts(id) ON DELETE CASCADE
         );
 
-        -- 插入默认家长（如果表为空）
+        -- 插入默认家长账户（如果为空）
+        INSERT OR IGNORE INTO accounts (id, username, pin_hash)
+        SELECT 'acc_default', 'admin', ''
+        WHERE NOT EXISTS (SELECT 1 FROM accounts);
+
+        -- 插入默认设置（如果为空）
         INSERT OR IGNORE INTO settings (id, account_id, data)
         SELECT 1, 'acc_default', '{"parentPin":"","currencyName":"积分","appTitle":"我的积分银行","maxDailyTasks":10}'
         WHERE NOT EXISTS (SELECT 1 FROM settings);
@@ -809,7 +824,10 @@ def health():
 def create_app():
     """工厂函数，便于测试和部署"""
     with app.app_context():
-        init_db()
+        import os
+        db_path = app.config['DATABASE']
+        force = not os.path.exists(db_path)
+        init_db(force_reset=force)
     return app
 
 
