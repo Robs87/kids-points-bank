@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>kids-points-bank</Name>
+  <Repository>ghcr.io/robs87/kids-points-bank:latest</Repository>
+  <Registry>https://ghcr.io/v2/robs87/kids-points-bank</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Overview>儿童积分银行 — 把无形的"自律"变成有形的"资产"，用代币机制催化孩子的自发驱动力。纯静态 Web 应用，无需数据库。</Overview>
+  <Category>Tools:</Category>
+  <WebUI>http://[IP]:[PORT:8899]/</WebUI>
+  <ExtraParams>--restart unless-stopped</ExtraParams>
+  <Config Name="Port" Target="80" Default="8899" Mode="tcp"
+          Description="WebUI 端口" Type="Port"
+          Display="always" Required="true" Mask="false">8899</Config>
+  <Config Name="Template URL" Target="TEMPLATE_URL" Default="" Mode="env"
+          Description="Unraid 模板 URL（用于更新）" Type="Variable"
+          Display="advanced" Required="false" Mask="false"></Config>
+</Container>

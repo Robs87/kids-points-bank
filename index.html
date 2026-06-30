@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>我的积分银行</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- ===== 顶部状态栏 ===== -->
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <span class="child-name">🏦 我的积分银行</span>
+    </div>
+    <div class="top-bar-right">
+      <span class="balance-badge" id="top-balance">0</span>
+      <span class="balance-unit">积分</span>
+    </div>
+  </header>
+
+  <!-- ===== 页面容器 ===== -->
+  <main class="pages">
+    
+    <!-- 页面1：成长地图 -->
+    <section class="page active" id="page-map">
+      <div class="page-title">🗺️ 成长地图</div>
+      <div class="page-subtitle">点击关卡查看详情，每天完成任务点亮维度</div>
+      <div class="map-container" id="map-container"></div>
+    </section>
+
+    <!-- 页面2：今日打卡 -->
+    <section class="page" id="page-checkin">
+      <div class="page-title">✅ 今日打卡</div>
+      <div class="page-subtitle">完成任务，赚取积分</div>
+      <div class="checkin-container" id="checkin-container"></div>
+    </section>
+
+    <!-- 页面3：奖励兑换 -->
+    <section class="page" id="page-reward">
+      <div class="page-title">🎁 奖励兑换</div>
+      <div class="page-subtitle">用积分兑换你想要的奖励</div>
+      <div class="reward-container" id="reward-container"></div>
+    </section>
+
+    <!-- 页面4：每周复盘 -->
+    <section class="page" id="page-review">
+      <div class="page-title">📊 每周复盘</div>
+      <div class="page-subtitle">周末家庭会议，一起回顾成长</div>
+      <div class="review-container" id="review-container"></div>
+    </section>
+
+    <!-- 页面5：成长作品 -->
+    <section class="page" id="page-portfolio">
+      <div class="page-title">📸 成长作品</div>
+      <div class="page-subtitle">收集每一刻的成长瞬间</div>
+      <div class="portfolio-container" id="portfolio-container"></div>
+    </section>
+
+  </main>
+
+  <!-- ===== 底部导航栏 ===== -->
+  <nav class="bottom-nav">
+    <button class="tab-btn active" data-tab="map">
+      <span class="nav-icon">🗺️</span>
+      <span class="nav-label">地图</span>
+    </button>
+    <button class="tab-btn" data-tab="checkin">
+      <span class="nav-icon">✅</span>
+      <span class="nav-label">打卡</span>
+    </button>
+    <button class="tab-btn" data-tab="reward">
+      <span class="nav-icon">🎁</span>
+      <span class="nav-label">奖励</span>
+    </button>
+    <button class="tab-btn" data-tab="review">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">复盘</span>
+    </button>
+    <button class="tab-btn" data-tab="portfolio">
+      <span class="nav-icon">📸</span>
+      <span class="nav-label">作品</span>
+    </button>
+  </nav>
+
+  <!-- ===== 脚本 ===== -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
