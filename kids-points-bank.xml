@@ -7,14 +7,14 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Overview>儿童积分银行 — 把无形的"自律"变成有形的"资产"，用代币机制催化孩子的自发驱动力。纯静态 Web 应用，无需数据库。</Overview>
+  <Overview>儿童成长积分银行 v2 — 基于代币经济理论的家庭激励工具。前后端分离架构，Flask 后端 + SQLite 数据库 + Nginx 静态前端。支持多账号、多小孩、家长 PIN 码门禁。数据持久化存储在 Unraid 上。</Overview>
   <Category>Tools:</Category>
   <WebUI>http://[IP]:[PORT:8899]/</WebUI>
   <ExtraParams>--restart unless-stopped</ExtraParams>
   <Config Name="Port" Target="80" Default="8899" Mode="tcp"
           Description="WebUI 端口" Type="Port"
           Display="always" Required="true" Mask="false">8899</Config>
-  <Config Name="Template URL" Target="TEMPLATE_URL" Default="" Mode="env"
-          Description="Unraid 模板 URL（用于更新）" Type="Variable"
-          Display="advanced" Required="false" Mask="false"></Config>
+  <Config Name="数据目录" Target="/data" Default="/mnt/user/appdata/kids-points-bank/data" Mode="rw"
+          Description="SQLite 数据库和媒体文件持久化目录" Type="Path"
+          Display="always" Required="true" Mask="false"></Config>
 </Container>
