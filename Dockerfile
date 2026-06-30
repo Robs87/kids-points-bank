@@ -60,6 +60,8 @@ RUN rm -f /etc/nginx/conf.d/default.conf
 # 安装 supervisor
 RUN pip install --no-cache-dir supervisor
 
+RUN mkdir -p /etc/supervisor
+
 # Supervisor 配置
 RUN printf '[supervisord]\nnodaemon=true\nlogfile=/dev/null\nlogfile_maxbytes=50MB\n\n[program:gunicorn]\ncommand=/usr/local/bin/gunicorn -b 0.0.0.0:5000 -w 2 --timeout 120 app:create_app\ndirectory=/app\nautostart=true\nautorestart=true\nstderr_logfile=/var/log/gunicorn.err.log\nstdout_logfile=/var/log/gunicorn.out.log\n\n[program:nginx]\ncommand=nginx -g "daemon off;"\nautostart=true\nautorestart=true\nstderr_logfile=/var/log/nginx.err.log\nstdout_logfile=/var/log/nginx.out.log\n' > /etc/supervisor/supervisord.conf
 
