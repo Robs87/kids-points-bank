@@ -184,7 +184,7 @@ def require_auth(f):
         if not auth_header.startswith('Bearer '):
             return jsonify({'error': '未登录'}), 401
         token = auth_header[7:]
-        session = request.session_store.get(token)
+        session = _session_store.get(token)
         if not session or not session.get('account_id'):
             return jsonify({'error': '登录已过期，请重新登录'}), 401
         g.current_session = session
@@ -212,7 +212,9 @@ def require_child_access(f):
 
 # ==================== Session Store ====================
 # In-memory session store (for Docker single-instance; use Redis for scale)
-request.session_store = {}
+# NOTE: Do NOT use `_session_store` — `request` is a proxy requiring request context.
+# Use a plain module variable instead.
+_session_store = {}
 
 
 # ==================== Auth Routes ====================
@@ -253,7 +255,7 @@ def auth_register():
     
     # 自动登录
     token = generate_id('sess_')
-    request.session_store[token] = {'account_id': account_id, 'username': username, 'created_at': datetime.utcnow().isoformat()}
+    _session_store[token] = {'account_id': account_id, 'username': username, 'created_at': datetime.utcnow().isoformat()}
     
     return jsonify({
         'token': token,
@@ -275,7 +277,7 @@ def auth_login():
         return jsonify({'error': '用户名或PIN码错误'}), 401
     
     token = generate_id('sess_')
-    request.session_store[token] = {
+    _session_store[token] = {
         'account_id': account['id'],
         'username': username,
         'created_at': datetime.utcnow().isoformat()
@@ -293,7 +295,7 @@ def auth_login():
 def auth_logout():
     """登出"""
     token = request.headers.get('Authorization', '')[7:]
-    request.session_store.pop(token, None)
+    _session_store.pop(token, None)
     return jsonify({'ok': True})
 
 
