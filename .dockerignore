@@ -1,4 +1,5 @@
-Dockerfile
-.github/
-README.md
+.git/
+.gitignore
 *.md
+.env
+*.db

@@ -1,0 +1,79 @@
+# ============================
+# 开发模式：Flask 单独运行 + Nginx 代理
+# ============================
+FROM python:3.12-slim AS backend-dev
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends gcc nginx \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app.py .
+
+ENV PORT=5000
+ENV DATABASE_PATH=/data/points_bank.db
+ENV FLASK_DEBUG=1
+
+EXPOSE 5000
+
+# ============================
+# 最终开发镜像
+# ============================
+FROM nginx:alpine
+
+COPY --from=backend-dev /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
+COPY --from=backend-dev /usr/local/bin/gunicorn /usr/local/bin/gunicorn
+COPY --from=backend-dev /app/app.py /app/app.py
+
+# 前端文件
+COPY . /usr/share/nginx/html
+
+RUN rm -f /etc/nginx/conf.d/default.conf
+
+# Nginx 配置：反向代理 /api 到 Flask
+RUN cat > /etc/nginx/conf.d/default.conf << 'NGINX'
+upstream flask_backend {
+    server 127.0.0.1:5000;
+}
+
+server {
+    listen 80;
+    server_name _;
+    
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+    }
+    
+    location /api/ {
+        proxy_pass http://flask_backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        add_header Access-Control-Allow-Origin $http_origin always;
+        add_header Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS" always;
+        add_header Access-Control-Allow-Headers "Authorization, Content-Type" always;
+        
+        if ($request_method = OPTIONS) {
+            return 204;
+        }
+    }
+}
+NGINX
+
+# 启动脚本
+RUN cat > /entrypoint.sh << 'ENTRY'
+#!/bin/sh
+mkdir -p /data
+gunicorn -b 0.0.0.0:5000 -w 2 --reload --timeout 120 app:create_app &
+exec nginx -g "daemon off;"
+ENTRY
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

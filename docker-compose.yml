@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 开发模式：Flask 热重载 + Nginx 静态文件
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app.py:/app/app.py:cached
+      - data:/data
+    environment:
+      - FLASK_DEBUG=1
+    restart: unless-stopped
+
+  # 生产模式：单镜像
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - data:/data
+    environment:
+      - SECRET_KEY=change-this-in-production
+    restart: unless-stopped
+
+volumes:
+  data:
+    driver: local

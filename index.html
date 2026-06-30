@@ -7,80 +7,116 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <!-- ===== 顶部状态栏 ===== -->
-  <header class="top-bar">
-    <div class="top-bar-left">
-      <span class="child-name">🏦 我的积分银行</span>
+  <!-- ===== 登录/注册页 ===== -->
+  <div id="screen-login" class="auth-screen" style="display:none;">
+    <div class="auth-container">
+      <div class="auth-logo">🏦</div>
+      <h1 class="auth-title">积分银行</h1>
+      <p class="auth-subtitle">让每一次努力都有回报</p>
+      <div id="login-form-container"></div>
     </div>
-    <div class="top-bar-right">
-      <span class="balance-badge" id="top-balance">0</span>
-      <span class="balance-unit">积分</span>
-    </div>
-  </header>
+  </div>
 
-  <!-- ===== 页面容器 ===== -->
-  <main class="pages">
+  <!-- ===== 添加小孩页 ===== -->
+  <div id="screen-add-child" class="auth-screen" style="display:none;">
+    <div class="auth-container">
+      <div class="auth-logo">👶</div>
+      <h1 class="auth-title">添加第一个小孩</h1>
+      <p class="auth-subtitle">开始记录成长的每一步</p>
+      <div id="add-child-form"></div>
+    </div>
+  </div>
+
+  <!-- ===== 主应用 ===== -->
+  <div id="main-app" style="display:none;">
     
-    <!-- 页面1：成长地图 -->
-    <section class="page active" id="page-map">
-      <div class="page-title">🗺️ 成长地图</div>
-      <div class="page-subtitle">点击关卡查看详情，每天完成任务点亮维度</div>
-      <div class="map-container" id="map-container"></div>
-    </section>
+    <!-- ===== 顶部状态栏 ===== -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <span class="child-name" id="top-child-name">🏦 积分银行</span>
+        <button class="child-switch-btn" onclick="window._app.showChildSwitcher()" title="切换小孩">⇅</button>
+      </div>
+      <div class="top-bar-right">
+        <span class="balance-badge" id="top-balance">0</span>
+        <span class="balance-unit">积分</span>
+        <button class="logout-btn" onclick="window._app.logout()" title="退出登录">⏻</button>
+      </div>
+    </header>
 
-    <!-- 页面2：今日打卡 -->
-    <section class="page" id="page-checkin">
-      <div class="page-title">✅ 今日打卡</div>
-      <div class="page-subtitle">完成任务，赚取积分</div>
-      <div class="checkin-container" id="checkin-container"></div>
-    </section>
+    <!-- ===== 页面容器 ===== -->
+    <main class="pages">
+      
+      <!-- 页面1：成长地图 -->
+      <section class="page active" id="page-map">
+        <div class="page-title">🗺️ 成长地图</div>
+        <div class="page-subtitle">点击关卡查看详情，每天完成任务点亮维度</div>
+        <div class="map-container" id="map-container"></div>
+      </section>
 
-    <!-- 页面3：奖励兑换 -->
-    <section class="page" id="page-reward">
-      <div class="page-title">🎁 奖励兑换</div>
-      <div class="page-subtitle">用积分兑换你想要的奖励</div>
-      <div class="reward-container" id="reward-container"></div>
-    </section>
+      <!-- 页面2：今日打卡 -->
+      <section class="page" id="page-checkin">
+        <div class="page-title">✅ 今日打卡</div>
+        <div class="page-subtitle">完成任务，赚取积分</div>
+        <div class="checkin-container" id="checkin-container"></div>
+      </section>
 
-    <!-- 页面4：每周复盘 -->
-    <section class="page" id="page-review">
-      <div class="page-title">📊 每周复盘</div>
-      <div class="page-subtitle">周末家庭会议，一起回顾成长</div>
-      <div class="review-container" id="review-container"></div>
-    </section>
+      <!-- 页面3：奖励兑换 -->
+      <section class="page" id="page-reward">
+        <div class="page-title">🎁 奖励兑换</div>
+        <div class="page-subtitle">用积分兑换你想要的奖励</div>
+        <div class="reward-container" id="reward-container"></div>
+      </section>
 
-    <!-- 页面5：成长作品 -->
-    <section class="page" id="page-portfolio">
-      <div class="page-title">📸 成长作品</div>
-      <div class="page-subtitle">收集每一刻的成长瞬间</div>
-      <div class="portfolio-container" id="portfolio-container"></div>
-    </section>
+      <!-- 页面4：每周复盘 -->
+      <section class="page" id="page-review">
+        <div class="page-title">📊 每周复盘</div>
+        <div class="page-subtitle">周末家庭会议，一起回顾成长</div>
+        <div class="review-container" id="review-container"></div>
+      </section>
 
-  </main>
+      <!-- 页面5：成长作品 -->
+      <section class="page" id="page-portfolio">
+        <div class="page-title">📸 成长作品</div>
+        <div class="page-subtitle">收集每一刻的成长瞬间</div>
+        <div class="portfolio-container" id="portfolio-container"></div>
+      </section>
 
-  <!-- ===== 底部导航栏 ===== -->
-  <nav class="bottom-nav">
-    <button class="tab-btn active" data-tab="map">
-      <span class="nav-icon">🗺️</span>
-      <span class="nav-label">地图</span>
-    </button>
-    <button class="tab-btn" data-tab="checkin">
-      <span class="nav-icon">✅</span>
-      <span class="nav-label">打卡</span>
-    </button>
-    <button class="tab-btn" data-tab="reward">
-      <span class="nav-icon">🎁</span>
-      <span class="nav-label">奖励</span>
-    </button>
-    <button class="tab-btn" data-tab="review">
-      <span class="nav-icon">📊</span>
-      <span class="nav-label">复盘</span>
-    </button>
-    <button class="tab-btn" data-tab="portfolio">
-      <span class="nav-icon">📸</span>
-      <span class="nav-label">作品</span>
-    </button>
-  </nav>
+    </main>
+
+    <!-- ===== 底部导航栏 ===== -->
+    <nav class="bottom-nav">
+      <button class="tab-btn active" data-tab="map">
+        <span class="nav-icon">🗺️</span>
+        <span class="nav-label">地图</span>
+      </button>
+      <button class="tab-btn" data-tab="checkin">
+        <span class="nav-icon">✅</span>
+        <span class="nav-label">打卡</span>
+      </button>
+      <button class="tab-btn" data-tab="reward">
+        <span class="nav-icon">🎁</span>
+        <span class="nav-label">奖励</span>
+      </button>
+      <button class="tab-btn" data-tab="review">
+        <span class="nav-icon">📊</span>
+        <span class="nav-label">复盘</span>
+      </button>
+      <button class="tab-btn" data-tab="portfolio">
+        <span class="nav-icon">📸</span>
+        <span class="nav-label">作品</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- ===== 小孩切换模态框 ===== -->
+  <div id="child-switcher-modal" class="modal-overlay" style="display:none;" onclick="if(event.target===this)window._app.hideChildSwitcher()">
+    <div class="modal-content">
+      <h3>选择小孩</h3>
+      <div id="child-switcher-list"></div>
+      <button class="modal-close" onclick="window._app.hideChildSwitcher()">关闭</button>
+    </div>
+  </div>
 
   <!-- ===== 脚本 ===== -->
   <script src="js/data.js"></script>
